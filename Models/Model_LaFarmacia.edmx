@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LaFarmaciaDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="T_Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_InvoiceDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceHeaderCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+          <Property Name="UnitPrice" Type="money" Nullable="false" />
+          <Property Name="Total" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_InvoiceHeader">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="PayMethodTypeId" Type="int" Nullable="false" />
+          <Property Name="SubTotal" Type="money" Nullable="false" />
+          <Property Name="Tax" Type="money" Nullable="false" />
+          <Property Name="Discount" Type="money" Nullable="false" />
+          <Property Name="Total" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_MethodPay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Tax" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Product">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+          <Property Name="ProductTypeCode" Type="char" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_ProductType">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Permission" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="T_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RolId" Type="int" Nullable="false" />
+          <Property Name="State" Type="bit" Nullable="false" />
+          <Property Name="Password" Type="varbinary" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_T_InvoiceDetail_T_InvoiceHeader">
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="1" />
+          <End Role="T_InvoiceDetail" Type="Self.T_InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_InvoiceHeader">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_InvoiceDetail">
+              <PropertyRef Name="InvoiceHeaderCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceDetail_T_Product">
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="1" />
+          <End Role="T_InvoiceDetail" Type="Self.T_InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Product">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_InvoiceDetail">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceHeader_T_Client">
+          <End Role="T_Client" Type="Self.T_Client" Multiplicity="1" />
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_InvoiceHeader">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceHeader_T_MethodPay">
+          <End Role="T_MethodPay" Type="Self.T_MethodPay" Multiplicity="1" />
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_MethodPay">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_InvoiceHeader">
+              <PropertyRef Name="PayMethodTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Product_T_ProductType">
+          <End Role="T_ProductType" Type="Self.T_ProductType" Multiplicity="1" />
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_ProductType">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_Product">
+              <PropertyRef Name="ProductTypeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_T_Rol">
+          <End Role="T_Rol" Type="Self.T_Rol" Multiplicity="1" />
+          <End Role="T_User" Type="Self.T_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_User">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_AddClient" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pName" Type="nvarchar" Mode="In" />
+          <Parameter Name="pEmail" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_CheckUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="pPassword" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_NewUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pName" Type="nvarchar" Mode="In" />
+          <Parameter Name="pEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="pRolId" Type="int" Mode="In" />
+          <Parameter Name="pState" Type="bit" Mode="In" />
+          <Parameter Name="pPassword" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_UpdateUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pId" Type="int" Mode="In" />
+          <Parameter Name="pName" Type="nvarchar" Mode="In" />
+          <Parameter Name="pEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="pRolId" Type="int" Mode="In" />
+          <Parameter Name="pState" Type="bit" Mode="In" />
+          <Parameter Name="pPassword" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="LaFarmaciaDBModelStoreContainer">
+          <EntitySet Name="T_Client" EntityType="Self.T_Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_InvoiceDetail" EntityType="Self.T_InvoiceDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_InvoiceHeader" EntityType="Self.T_InvoiceHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_MethodPay" EntityType="Self.T_MethodPay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Product" EntityType="Self.T_Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_ProductType" EntityType="Self.T_ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_Rol" EntityType="Self.T_Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_User" EntityType="Self.T_User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_T_InvoiceDetail_T_InvoiceHeader" Association="Self.FK_T_InvoiceDetail_T_InvoiceHeader">
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+            <End Role="T_InvoiceDetail" EntitySet="T_InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceDetail_T_Product" Association="Self.FK_T_InvoiceDetail_T_Product">
+            <End Role="T_Product" EntitySet="T_Product" />
+            <End Role="T_InvoiceDetail" EntitySet="T_InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceHeader_T_Client" Association="Self.FK_T_InvoiceHeader_T_Client">
+            <End Role="T_Client" EntitySet="T_Client" />
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceHeader_T_MethodPay" Association="Self.FK_T_InvoiceHeader_T_MethodPay">
+            <End Role="T_MethodPay" EntitySet="T_MethodPay" />
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Product_T_ProductType" Association="Self.FK_T_Product_T_ProductType">
+            <End Role="T_ProductType" EntitySet="T_ProductType" />
+            <End Role="T_Product" EntitySet="T_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_T_Rol" Association="Self.FK_T_User_T_Rol">
+            <End Role="T_Rol" EntitySet="T_Rol" />
+            <End Role="T_User" EntitySet="T_User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LaFarmaciaDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="T_Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="T_InvoiceHeader" Relationship="Self.FK_T_InvoiceHeader_T_Client" FromRole="T_Client" ToRole="T_InvoiceHeader" />
+        </EntityType>
+        <EntityType Name="T_InvoiceDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceHeaderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="T_InvoiceHeader" Relationship="Self.FK_T_InvoiceDetail_T_InvoiceHeader" FromRole="T_InvoiceDetail" ToRole="T_InvoiceHeader" />
+          <NavigationProperty Name="T_Product" Relationship="Self.FK_T_InvoiceDetail_T_Product" FromRole="T_InvoiceDetail" ToRole="T_Product" />
+        </EntityType>
+        <EntityType Name="T_InvoiceHeader">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="PayMethodTypeId" Type="Int32" Nullable="false" />
+          <Property Name="SubTotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Tax" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="T_Client" Relationship="Self.FK_T_InvoiceHeader_T_Client" FromRole="T_InvoiceHeader" ToRole="T_Client" />
+          <NavigationProperty Name="T_InvoiceDetail" Relationship="Self.FK_T_InvoiceDetail_T_InvoiceHeader" FromRole="T_InvoiceHeader" ToRole="T_InvoiceDetail" />
+          <NavigationProperty Name="T_MethodPay" Relationship="Self.FK_T_InvoiceHeader_T_MethodPay" FromRole="T_InvoiceHeader" ToRole="T_MethodPay" />
+        </EntityType>
+        <EntityType Name="T_MethodPay">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tax" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <NavigationProperty Name="T_InvoiceHeader" Relationship="Self.FK_T_InvoiceHeader_T_MethodPay" FromRole="T_MethodPay" ToRole="T_InvoiceHeader" />
+        </EntityType>
+        <EntityType Name="T_Product">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <Property Name="ProductTypeCode" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_InvoiceDetail" Relationship="Self.FK_T_InvoiceDetail_T_Product" FromRole="T_Product" ToRole="T_InvoiceDetail" />
+          <NavigationProperty Name="T_ProductType" Relationship="Self.FK_T_Product_T_ProductType" FromRole="T_Product" ToRole="T_ProductType" />
+        </EntityType>
+        <EntityType Name="T_ProductType">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="T_Product" Relationship="Self.FK_T_Product_T_ProductType" FromRole="T_ProductType" ToRole="T_Product" />
+        </EntityType>
+        <EntityType Name="T_Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Permission" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="T_User" Relationship="Self.FK_T_User_T_Rol" FromRole="T_Rol" ToRole="T_User" />
+        </EntityType>
+        <EntityType Name="T_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RolId" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="Binary" MaxLength="256" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="T_Rol" Relationship="Self.FK_T_User_T_Rol" FromRole="T_User" ToRole="T_Rol" />
+        </EntityType>
+        <Association Name="FK_T_InvoiceHeader_T_Client">
+          <End Role="T_Client" Type="Self.T_Client" Multiplicity="1" />
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_InvoiceHeader">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceDetail_T_InvoiceHeader">
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="1" />
+          <End Role="T_InvoiceDetail" Type="Self.T_InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_InvoiceHeader">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_InvoiceDetail">
+              <PropertyRef Name="InvoiceHeaderCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceDetail_T_Product">
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="1" />
+          <End Role="T_InvoiceDetail" Type="Self.T_InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Product">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_InvoiceDetail">
+              <PropertyRef Name="ProductCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoiceHeader_T_MethodPay">
+          <End Role="T_MethodPay" Type="Self.T_MethodPay" Multiplicity="1" />
+          <End Role="T_InvoiceHeader" Type="Self.T_InvoiceHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_MethodPay">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_InvoiceHeader">
+              <PropertyRef Name="PayMethodTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Product_T_ProductType">
+          <End Role="T_ProductType" Type="Self.T_ProductType" Multiplicity="1" />
+          <End Role="T_Product" Type="Self.T_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_ProductType">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="T_Product">
+              <PropertyRef Name="ProductTypeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_User_T_Rol">
+          <End Role="T_Rol" Type="Self.T_Rol" Multiplicity="1" />
+          <End Role="T_User" Type="Self.T_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="T_User">
+              <PropertyRef Name="RolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LaFarmaciaDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="T_Client" EntityType="Self.T_Client" />
+          <EntitySet Name="T_InvoiceDetail" EntityType="Self.T_InvoiceDetail" />
+          <EntitySet Name="T_InvoiceHeader" EntityType="Self.T_InvoiceHeader" />
+          <EntitySet Name="T_MethodPay" EntityType="Self.T_MethodPay" />
+          <EntitySet Name="T_Product" EntityType="Self.T_Product" />
+          <EntitySet Name="T_ProductType" EntityType="Self.T_ProductType" />
+          <EntitySet Name="T_Rol" EntityType="Self.T_Rol" />
+          <EntitySet Name="T_User" EntityType="Self.T_User" />
+          <AssociationSet Name="FK_T_InvoiceHeader_T_Client" Association="Self.FK_T_InvoiceHeader_T_Client">
+            <End Role="T_Client" EntitySet="T_Client" />
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceDetail_T_InvoiceHeader" Association="Self.FK_T_InvoiceDetail_T_InvoiceHeader">
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+            <End Role="T_InvoiceDetail" EntitySet="T_InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceDetail_T_Product" Association="Self.FK_T_InvoiceDetail_T_Product">
+            <End Role="T_Product" EntitySet="T_Product" />
+            <End Role="T_InvoiceDetail" EntitySet="T_InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoiceHeader_T_MethodPay" Association="Self.FK_T_InvoiceHeader_T_MethodPay">
+            <End Role="T_MethodPay" EntitySet="T_MethodPay" />
+            <End Role="T_InvoiceHeader" EntitySet="T_InvoiceHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Product_T_ProductType" Association="Self.FK_T_Product_T_ProductType">
+            <End Role="T_ProductType" EntitySet="T_ProductType" />
+            <End Role="T_Product" EntitySet="T_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_User_T_Rol" Association="Self.FK_T_User_T_Rol">
+            <End Role="T_Rol" EntitySet="T_Rol" />
+            <End Role="T_User" EntitySet="T_User" />
+          </AssociationSet>
+          <FunctionImport Name="SP_AddClient">
+            <Parameter Name="pName" Mode="In" Type="String" />
+            <Parameter Name="pEmail" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_CheckUser" ReturnType="Collection(LaFarmaciaDBModel.SP_CheckUser_Result)">
+            <Parameter Name="pEmail" Mode="In" Type="String" />
+            <Parameter Name="pPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_UpdateUser">
+            <Parameter Name="pId" Mode="In" Type="Int32" />
+            <Parameter Name="pName" Mode="In" Type="String" />
+            <Parameter Name="pEmail" Mode="In" Type="String" />
+            <Parameter Name="pRolId" Mode="In" Type="Int32" />
+            <Parameter Name="pState" Mode="In" Type="Boolean" />
+            <Parameter Name="pPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_NewUser">
+            <Parameter Name="pName" Mode="In" Type="String" />
+            <Parameter Name="pEmail" Mode="In" Type="String" />
+            <Parameter Name="pRolId" Mode="In" Type="Int32" />
+            <Parameter Name="pState" Mode="In" Type="Boolean" />
+            <Parameter Name="pPassword" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SP_CheckUser_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="RolId" Nullable="false" />
+          <Property Type="Boolean" Name="State" Nullable="false" />
+          <Property Type="Binary" Name="Password" Nullable="false" MaxLength="256" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LaFarmaciaDBModelStoreContainer" CdmEntityContainer="LaFarmaciaDBEntities">
+          <EntitySetMapping Name="T_Client">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_Client">
+              <MappingFragment StoreEntitySet="T_Client">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_InvoiceDetail">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_InvoiceDetail">
+              <MappingFragment StoreEntitySet="T_InvoiceDetail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="InvoiceHeaderCode" ColumnName="InvoiceHeaderCode" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_InvoiceHeader">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_InvoiceHeader">
+              <MappingFragment StoreEntitySet="T_InvoiceHeader">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="PayMethodTypeId" ColumnName="PayMethodTypeId" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_MethodPay">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_MethodPay">
+              <MappingFragment StoreEntitySet="T_MethodPay">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Product">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_Product">
+              <MappingFragment StoreEntitySet="T_Product">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ProductTypeCode" ColumnName="ProductTypeCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_ProductType">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_ProductType">
+              <MappingFragment StoreEntitySet="T_ProductType">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_Rol">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_Rol">
+              <MappingFragment StoreEntitySet="T_Rol">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_User">
+            <EntityTypeMapping TypeName="LaFarmaciaDBModel.T_User">
+              <MappingFragment StoreEntitySet="T_User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RolId" ColumnName="RolId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_AddClient" FunctionName="LaFarmaciaDBModel.Store.SP_AddClient" />
+          <FunctionImportMapping FunctionImportName="SP_CheckUser" FunctionName="LaFarmaciaDBModel.Store.SP_CheckUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LaFarmaciaDBModel.SP_CheckUser_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RolId" ColumnName="RolId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_UpdateUser" FunctionName="LaFarmaciaDBModel.Store.SP_UpdateUser" />
+          <FunctionImportMapping FunctionImportName="SP_NewUser" FunctionName="LaFarmaciaDBModel.Store.SP_NewUser" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
