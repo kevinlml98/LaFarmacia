@@ -11,7 +11,8 @@ namespace LaFarmacia.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class T_Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,16 +20,30 @@ namespace LaFarmacia.Models
         {
             this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
         }
-    
+        [Required]
+        [Display(Name = "Código")]
         public string Code { get; set; }
+        [Required]
+        [Display(Name = "Descripción")]
         public string Description { get; set; }
+        [Required]
+        [Display(Name = "Precio")]
         public decimal Price { get; set; }
+        [Required]
+        [Display(Name = "Cantidad")]
         public int Count { get; set; }
+        [Required]
+        [Display(Name = "Estado")]
         public bool State { get; set; }
+
+        [Required]
+        [Display(Name = "Tipo de Produto")]
         public string ProductTypeCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
+        [Required]
+        [Display(Name = "Tipo de Producto")]
         public virtual T_ProductType T_ProductType { get; set; }
     }
 }
