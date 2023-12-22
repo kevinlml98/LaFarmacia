@@ -8,12 +8,33 @@ using System.Web;
 using System.Web.Mvc;
 using LaFarmacia.Models;
 using LaFarmacia.Models.viewModel;
+using Newtonsoft.Json;
 
 namespace LaFarmacia.Controllers
 {
     public class FacturaController : Controller
     {
         private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+
+        private List<T_InvoiceDetail> _InvoiceDetailGlobal
+        {
+
+            get
+            {
+                List<T_InvoiceDetail> data = Session["DetallesFactura"] as List<T_InvoiceDetail>;
+                if(data == null)
+                {
+                    data = new List<T_InvoiceDetail>();
+                    Session["DetallesFactura"] = data;
+                }
+                return data;
+            }
+            set
+            {
+                Session["DetallesFactura"] = value;
+            }
+
+        }
 
         // GET: Factura
         public ActionResult Index()
@@ -156,12 +177,12 @@ namespace LaFarmacia.Controllers
         }
 
         [HttpPost]
-        public JsonResult ValidarCliente(int IdCliente)
+        public ActionResult ValidarCliente(T_InvoiceHeader t_InvoiceHeader)
         {
 
             Respuesta  respuesta = new Respuesta();
 
-            T_Client client = db.T_Client.Find(IdCliente);
+            T_Client client = db.T_Client.Find(t_InvoiceHeader.ClientId);
 
             if (client == null)
             {
@@ -171,26 +192,104 @@ namespace LaFarmacia.Controllers
                 if (RolUsuario == "Administrador")
                 {
 
-                    respuesta.Resultado = 1;
-                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente";
+                    respuesta.Resultado = false;
+                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente.";
 
                 }
-                if (RolUsuario == "Vendedor")
+                else if (RolUsuario == "Vendedor")
                 {
 
-                    respuesta.Resultado = 2;
-                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente";
+                    respuesta.Resultado = false;
+                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente.";
 
                 }
                 else
                 {
 
-                    respuesta.Resultado = 3;
+                    respuesta.Resultado = false;
                     respuesta.Texto = "Cliente no se encuentra registrado, por favor contactar con un administrador.";
 
                 }
 
             }
+            else
+            {
+
+                respuesta.Resultado = true;
+                respuesta.Texto = "Cliente si existe.";
+
+            }
+            return Json(respuesta);
+        }
+
+        [HttpPost]
+        public ActionResult ValidarProducto(T_Product t_Product)
+        {
+
+            Respuesta respuesta = new Respuesta();
+
+            T_Product t_Productseleccionado = db.T_Product.Find(t_Product.Code);
+
+            if (t_Productseleccionado.State == false)
+            {
+
+                respuesta.Resultado = false;
+                respuesta.Texto = "El Producto se encuenta agotado.";
+
+            }
+            else
+            {
+
+                if (t_Productseleccionado.Count >= t_Product.Count)
+                {
+
+                    respuesta.Resultado = true;
+                    respuesta.Texto = "El Producto se añadio correctamente.";
+
+                }
+                else
+                {
+
+                    respuesta.Resultado = false;
+                    respuesta.Texto = "El Producto se encuentra activo, pero se estan solicitando más de los que se encuentran en stock.";
+
+                }
+
+            }
+
+            return Json(respuesta);
+        }
+
+        public JsonResult AgregarDetalle(T_InvoiceDetail t_InvoiceDetail)
+        {
+
+            Respuesta respuesta = new Respuesta();
+
+            _InvoiceDetailGlobal.Add(t_InvoiceDetail);
+
+            List<T_Product> t_Products = new List<T_Product>();
+
+            foreach (var item in _InvoiceDetailGlobal)
+            {
+
+                T_Product t_Productseleccionado = db.T_Product.Find(item.ProductCode);
+                t_Products.Add(t_Productseleccionado);
+
+            }
+
+            return Json(t_Products);
+        }
+
+        public ActionResult CalcularStock(T_Product t_Product)
+        {
+
+            Respuesta respuesta = new Respuesta();
+
+            T_Product t_Productseleccionado = db.T_Product.Find(t_Product.Code);
+
+            respuesta.Resultado = true;
+            respuesta.Valor = t_Productseleccionado.Count;
+
             return Json(respuesta);
         }
 
