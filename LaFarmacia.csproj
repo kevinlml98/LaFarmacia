@@ -155,6 +155,9 @@
     <Compile Include="Models\SP_CheckUser_Result.cs">
       <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\T_Client.cs">
       <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
     </Compile>
@@ -185,6 +188,7 @@
     <Compile Include="Models\viewModel\MethodPayDTO.cs" />
     <Compile Include="Models\viewModel\ProductDTO.cs" />
     <Compile Include="Models\viewModel\ProductTypeDTO.cs" />
+    <Compile Include="Models\viewModel\Respuesta.cs" />
     <Compile Include="Models\viewModel\RolDTO.cs" />
     <Compile Include="Models\viewModel\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -258,7 +262,6 @@
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Factura\Create.cshtml" />
-    <Content Include="Views\Factura\Delete.cshtml" />
     <Content Include="Views\Factura\Details.cshtml" />
     <Content Include="Views\Factura\Edit.cshtml" />
     <Content Include="Views\Factura\Index.cshtml" />

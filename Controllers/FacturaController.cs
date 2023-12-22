@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LaFarmacia.Models;
+using LaFarmacia.Models.viewModel;
 
 namespace LaFarmacia.Controllers
 {
@@ -17,7 +18,7 @@ namespace LaFarmacia.Controllers
         // GET: Factura
         public ActionResult Index()
         {
-            var t_InvoiceHeader = db.T_InvoiceHeader.Include(t => t.T_Client).Include(t => t.T_MethodPay);
+            var t_InvoiceHeader = db.T_InvoiceHeader.Include(t => t.T_MethodPay);
             return View(t_InvoiceHeader.ToList());
         }
 
@@ -41,7 +42,25 @@ namespace LaFarmacia.Controllers
         {
             ViewBag.ClientId = new SelectList(db.T_Client, "Id", "Name");
             ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description");
-            return View();
+            ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description");
+            ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
+
+            string RolUsuario = "Administrador"; //Session["Rol"] as string;
+
+            if (RolUsuario == "Administrador")
+            {
+                ViewBag.Rol = 1;
+            }
+            else if(RolUsuario == "Vendedor")
+            {
+                ViewBag.Rol = 2;
+            }
+            else
+            {
+                ViewBag.Rol = 0;
+            }
+
+                return View();
         }
 
         // POST: Factura/Create
@@ -49,79 +68,156 @@ namespace LaFarmacia.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Code,Date,ClientId,PayMethodTypeId,SubTotal,Tax,Discount,Total")] T_InvoiceHeader t_InvoiceHeader)
+        public ActionResult Create(T_InvoiceHeader t_InvoiceHeader)
         {
-            if (ModelState.IsValid)
-            {
-                db.T_InvoiceHeader.Add(t_InvoiceHeader);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
 
-            ViewBag.ClientId = new SelectList(db.T_Client, "Id", "Name", t_InvoiceHeader.ClientId);
-            ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
-            return View(t_InvoiceHeader);
+                T_Client client = db.T_Client.Find(t_InvoiceHeader.ClientId);
+
+                if (client == null)
+                {
+
+                    string RolUsuario = "Administrador"; //Session["Rol"] as string;
+
+                    if (RolUsuario == "Administrador")
+                    {
+
+                        ViewBag.ValorMensaje = 1;
+                        ViewBag.Rol = 1;
+                        ViewBag.MensajeProceso = "Cliente no se encuentra registrado";
+                        ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
+                        ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
+                        ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description", t_InvoiceHeader.ProductoId);
+                        return View(t_InvoiceHeader);
+
+                }
+                if (RolUsuario == "Vendedor")
+                {
+
+                    ViewBag.ValorMensaje = 1;
+                    ViewBag.Rol = 2;
+                    ViewBag.MensajeProceso = "Cliente no se encuentra registrado";
+                    ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
+                    ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
+                    ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description", t_InvoiceHeader.ProductoId);
+                    return View(t_InvoiceHeader);
+
+                }
+                    else
+                    {
+
+                    ViewBag.ValorMensaje = 1;
+                    ViewBag.Rol = 0;
+                    ViewBag.MensajeProceso = "Cliente no se encuentra registrado, por favor contactar con un administrador.";
+                    ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
+                    ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
+                    ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description", t_InvoiceHeader.ProductoId);
+                    return View(t_InvoiceHeader);
+
+                    }
+
+                }
+                else
+                {
+
+                t_InvoiceHeader.Code = CalcularConsecutivo();
+
+                if (ModelState.IsValid)
+                    {
+
+                        db.T_InvoiceHeader.Add(t_InvoiceHeader);
+                        db.SaveChanges();
+                        
+                        foreach (var item in t_InvoiceHeader.T_InvoiceDetailList)
+                        {
+
+                        decimal precioUnitario = CalcularPrecioUnitario(item.ProductCode);
+
+                        T_InvoiceDetail t_InvoiceDetail = new T_InvoiceDetail();
+                        t_InvoiceDetail.InvoiceHeaderCode = t_InvoiceHeader.Code;
+                        t_InvoiceDetail.ProductCode = item.ProductCode;
+                        t_InvoiceDetail.Count = item.Count;
+                        t_InvoiceDetail.UnitPrice = precioUnitario;
+                        t_InvoiceDetail.Total = item.Total;
+                        db.T_InvoiceDetail.Add(t_InvoiceDetail);
+
+                        }
+
+                    db.SaveChanges();
+
+                }
+
+                    ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description", t_InvoiceHeader.ProductoId);
+                    ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
+                    ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
+                    return View(t_InvoiceHeader);
+
+                }
+            
         }
 
-        // GET: Factura/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            T_InvoiceHeader t_InvoiceHeader = db.T_InvoiceHeader.Find(id);
-            if (t_InvoiceHeader == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ClientId = new SelectList(db.T_Client, "Id", "Name", t_InvoiceHeader.ClientId);
-            ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
-            return View(t_InvoiceHeader);
-        }
-
-        // POST: Factura/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Code,Date,ClientId,PayMethodTypeId,SubTotal,Tax,Discount,Total")] T_InvoiceHeader t_InvoiceHeader)
+        public JsonResult ValidarCliente(int IdCliente)
         {
-            if (ModelState.IsValid)
+
+            Respuesta  respuesta = new Respuesta();
+
+            T_Client client = db.T_Client.Find(IdCliente);
+
+            if (client == null)
             {
-                db.Entry(t_InvoiceHeader).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                string RolUsuario = "Administrador"; //Session["Rol"] as string;
+
+                if (RolUsuario == "Administrador")
+                {
+
+                    respuesta.Resultado = 1;
+                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente";
+
+                }
+                if (RolUsuario == "Vendedor")
+                {
+
+                    respuesta.Resultado = 2;
+                    respuesta.Texto = "Cliente no se encuentra registrado, por favor registrar el cliente";
+
+                }
+                else
+                {
+
+                    respuesta.Resultado = 3;
+                    respuesta.Texto = "Cliente no se encuentra registrado, por favor contactar con un administrador.";
+
+                }
+
             }
-            ViewBag.ClientId = new SelectList(db.T_Client, "Id", "Name", t_InvoiceHeader.ClientId);
-            ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
-            return View(t_InvoiceHeader);
+            return Json(respuesta);
         }
 
-        // GET: Factura/Delete/5
-        public ActionResult Delete(string id)
+        public string CalcularConsecutivo()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            T_InvoiceHeader t_InvoiceHeader = db.T_InvoiceHeader.Find(id);
-            if (t_InvoiceHeader == null)
-            {
-                return HttpNotFound();
-            }
-            return View(t_InvoiceHeader);
+
+            T_InvoiceHeader UltimoElemento = db.T_InvoiceHeader.OrderByDescending(x => x.Code).FirstOrDefault();
+
+            string CodigoActual = UltimoElemento.Code;
+
+            string[] Separador = CodigoActual.Split('0');
+
+            string ConsecutivoS = Separador[Separador.Length - 1];
+
+            int ConsecutivoI = Convert.ToInt32(ConsecutivoS);
+
+            string FormatoConsecutivo = string.Format("FAC{0:D10}", ConsecutivoI + 1);
+
+            return FormatoConsecutivo;
         }
 
-        // POST: Factura/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public decimal CalcularPrecioUnitario(string id)
         {
-            T_InvoiceHeader t_InvoiceHeader = db.T_InvoiceHeader.Find(id);
-            db.T_InvoiceHeader.Remove(t_InvoiceHeader);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            T_Product t_Product = db.T_Product.Find(id);
+
+           return t_Product.Price;
         }
 
         protected override void Dispose(bool disposing)

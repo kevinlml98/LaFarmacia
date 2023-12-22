@@ -2,95 +2,267 @@
 
 @{
     ViewBag.Title = "Create";
+    
 }
 
-<h2>Create</h2>
+<h2>Creación de Factura</h2>
 
-
-@using (Html.BeginForm()) 
+@if (ViewBag.ValorMensaje == 1)
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>T_InvoiceHeader</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Mensaje</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">@ViewBag.MensajeProceso</div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClientId, "ClientId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ClientId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PayMethodTypeId, "PayMethodTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("PayMethodTypeId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PayMethodTypeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SubTotal, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tax, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Tax, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
 }
+else
+{
+    if (ViewBag.ValorMensaje == 0)
+    {
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    }
 }
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <h3>Encabezado de la Factura</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+            @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ClientId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ClientId, new { htmlAttributes = new { @class = "form-control", id = "IdCliente" } })
+            @Html.ValidationMessageFor(model => model.ClientId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PayMethodTypeId, "PayMethodTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("PayMethodTypeId", null, htmlAttributes: new { @class = "form-control", id = "MetodoPago" })
+            @Html.ValidationMessageFor(model => model.PayMethodTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <h3>Detalle de la Factura</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.T_InvoiceDetail.T_Product.Code, "ProductoId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("ProductoId", null, htmlAttributes: new { @class = "form-control", id = "Producto" })
+            @Html.ValidationMessageFor(model => model.T_InvoiceDetail.T_Product.Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.T_InvoiceDetail.Count, "Count", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.T_InvoiceDetail.Count, new { htmlAttributes = new { @class = "form-control", id = "Cantidad" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.DropDownList("PrecioId", null, htmlAttributes: new { @class = "form-control", id = "PrecioUnitario" })
+            @Html.ValidationMessageFor(model => model.T_InvoiceDetail.T_Product.Price, "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Agregar Producto" class="btn btn-default" onclick="AgregarDetalle(); return false" />
+        </div>
+    </div>
+
+
+    <div id="divDetalle">
+
+        <table class="table" id="tablaDetalle">
+
+            <tr>
+
+                <th>Código Producto</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>PrecioUnitario</th>
+                <th>Total</th>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SubTotal, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", id = "Subtotal" } })
+            @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Total, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", id = "Total" } })
+            @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Crear Factura" class="btn btn-default" />
+            @if (ViewBag.Rol == 1 || ViewBag.Rol == 2)
+            {
+                //<input type="button" value="Crear Cliente" class="btn btn-default" onclick="document.location.href ='@Url.Content("~/Cliente/Create")'" />
+                <input type="button" value="Crear Cliente" class="btn btn-default" id="Validarcliente" onclick="ValidarCliente(); return false" />
+            }
+            @if (ViewBag.Rol == 1)
+            {
+                <input type="button" value="Actualizar Producto" class="btn btn-default" onclick="document.location.href ='@Url.Content("~/Producto/Index")'" />
+            }
+        </div>
+    </div>
+
+</div>
+}
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $('#myModal').modal('show');
+            var num = 0;
+            var SumSubtotal = 0;
+            var Sumtotal = 0;
+            let PrecioUnitario = document.getElementById("PrecioUnitario");
+            PrecioUnitario.style.display = "none";
+
+            function AgregarDetalle() {
+
+                let Producto = document.getElementById("Producto");
+                let TextoSeleccionado = Producto.options[Producto.selectedIndex].text;
+                let ValorProducto = document.getElementById("Producto").value;
+                let Cantidad = document.getElementById("Cantidad").value;
+                let MetodoPago = document.getElementById("MetodoPago");
+                let MetodoPagoSeleccionado = MetodoPago.options[MetodoPago.selectedIndex].text;
+                let Subtotal = document.getElementById("Subtotal");
+                let Total = document.getElementById("Total");
+
+                let PrecioUnitario = document.getElementById("PrecioUnitario");
+                let PrecioSeleccionado = PrecioUnitario.options[Producto.selectedIndex].value;
+
+                let Tabla = document.getElementById("tablaDetalle");
+                let Tr = document.createElement("tr");
+                let TdValorProducto = document.createElement("td");
+                let TdProducto = document.createElement("td");
+                let TdCantidad = document.createElement("td");
+                let TdPrecioUnitario = document.createElement("td");
+                let TdTotal = document.createElement("td");
+
+                
+                TdValorProducto.innerHTML = ValorProducto;
+                TdProducto.innerHTML = TextoSeleccionado;
+                TdCantidad.innerHTML = Cantidad;
+                TdPrecioUnitario.innerHTML = parseFloat(PrecioSeleccionado);
+                TdTotal.innerHTML = parseFloat(Cantidad) * parseFloat(PrecioSeleccionado);
+
+                Tr.appendChild(TdValorProducto);
+                Tr.appendChild(TdProducto);
+                Tr.appendChild(TdCantidad);
+                Tr.appendChild(TdPrecioUnitario);
+                Tr.appendChild(TdTotal);
+
+                Tabla.appendChild(Tr);
+
+                SumSubtotal = SumSubtotal + parseFloat(Cantidad) * parseFloat(PrecioSeleccionado);
+                Subtotal.value = SumSubtotal;
+
+                let Impuesto = SumSubtotal * 0.13;
+
+                Sumtotal = SumSubtotal + Impuesto;
+
+                Total.value = Sumtotal;
+
+                if (MetodoPagoSeleccionado === "Tarjeta") {
+
+                    let ImpuestoTarjeta = Sumtotal * 0.02;
+
+                    Total.value = Sumtotal + ImpuestoTarjeta
+
+                } else {
+
+                    Total.value = Sumtotal;
+
+                }
+
+                //Codigo de hiddens
+
+                let DivDetalle = document.getElementById("divDetalle");
+                let HiddenIndex = document.createElement("input");
+                let HiddenValorProducto = document.createElement("input");
+                let HiddenCantidad = document.createElement("input");
+
+                HiddenValorProducto.name = "T_InvoiceDetailList.Index";
+                HiddenIndex.value = num;
+                HiddenIndex.type = "hidden";
+                HiddenValorProducto.name = "T_InvoiceDetailList[" + num + "].ProductCode";
+                HiddenValorProducto.value = ValorProducto;
+                HiddenValorProducto.type = "hidden";
+                HiddenCantidad.name = "T_InvoiceDetailList[" + num + "].Count";
+                HiddenCantidad.value = Cantidad;
+                HiddenCantidad.type = "hidden";
+                DivDetalle.appendChild(HiddenIndex);
+                DivDetalle.appendChild(HiddenValorProducto);
+                DivDetalle.appendChild(HiddenCantidad);
+
+                document.getElementById("Producto").value = "";
+                document.getElementById("Cantidad").value = 0;
+
+                num++;
+            }
+
+
+            function ValidarCliente() {
+
+                let IdCliente = document.getElementById("IdCliente").value; 
+
+                var url = "@Url.Action("ValidarCliente", "Factura")";
+
+                $.post(url, 2).done(function (data) {
+
+                    alert(data);
+
+                }).fail(alert("error"))
+
+            }
+
+        </script>
+    }
