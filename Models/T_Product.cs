@@ -23,16 +23,28 @@ namespace LaFarmacia.Models
         [Required]
         [Display(Name = "Código de Producto")]
         public string Code { get; set; }
+        [Required]
+        [Display(Name = "Descripción")]
         public string Description { get; set; }
+        [Required]
+        [Display(Name = "Precio")]
         public decimal Price { get; set; }
         [Required]
+
         [Display(Name = "Cantidad de Producto")]
         public int Count { get; set; }
+        [Required]
+        [Display(Name = "Estado")]
         public bool State { get; set; }
+
+        [Required]
+        [Display(Name = "Tipo de Produto")]
         public string ProductTypeCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
+        [Required]
+        [Display(Name = "Tipo de Producto")]
         public virtual T_ProductType T_ProductType { get; set; }
     }
 }

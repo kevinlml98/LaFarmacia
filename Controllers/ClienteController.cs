@@ -17,9 +17,9 @@ namespace LaFarmacia.Controllers
         public ActionResult Index()
         {
             List<ClientDTO> clients = new List<ClientDTO>();
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
             {
-                foreach(T_Client client in db.T_Client)
+                foreach (T_Client client in db.T_Client)
                 {
                     clients.Add(new ClientDTO
                     {
@@ -39,7 +39,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
             {
                 T_Client client = db.T_Client.Find(id);
                 if (client == null)
@@ -54,7 +54,7 @@ namespace LaFarmacia.Controllers
                 };
                 return View(clientDTO);
             }
-            
+
         }
 
         // GET: Cliente/Create
@@ -72,7 +72,7 @@ namespace LaFarmacia.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+                using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
                 {
                     T_Client client = new T_Client()
                     {
@@ -96,7 +96,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
             {
                 T_Client client = db.T_Client.Find(id);
                 if (client == null)
@@ -110,7 +110,7 @@ namespace LaFarmacia.Controllers
                     Email = client.Email
                 };
                 return View(clientDTO);
-            }            
+            }
         }
 
         // POST: Cliente/Edit/5
@@ -122,7 +122,7 @@ namespace LaFarmacia.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+                using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
                 {
                     T_Client cliente = new T_Client()
                     {
@@ -134,7 +134,7 @@ namespace LaFarmacia.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                
+
             }
             return View(clientDTO);
         }

@@ -184,5 +184,34 @@ namespace LaFarmacia.Controllers
             }
             return roles;
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(UserDTO user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var usr = db.SP_CheckUser(user.Email, user.Password).ToList();
+            if (usr.Count() > 0)
+            {
+                UserDTO usuario = new UserDTO()
+                {
+                    Email = usr[0].Email,
+                    Id = usr[0].Id,
+                    Name = usr[0].Name,
+                    RolId = usr[0].RolId,
+                    State = usr[0].State
+                };
+            }
+
+
+            return View();
+        }
     }
 }
