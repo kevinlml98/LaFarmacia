@@ -177,7 +177,7 @@ namespace LaFarmacia.Controllers
             var usr = db.SP_CheckUser(user.Email, user.Password).ToList();
             if (usr.Count() > 0)
             {
-                T_Rol rol = db.T_Rol.Find(usr[0].Id);
+                T_Rol rol = db.T_Rol.Find(usr[0].RolId);
                 UserDTO usuario = new UserDTO()
                 {
                     Email = usr[0].Email,
