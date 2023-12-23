@@ -142,41 +142,6 @@ namespace LaFarmacia.Controllers
             return View(userDTO);
         }
 
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            T_User user = db.T_User.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            UserDTO userDTO = new UserDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                RolId = user.RolId,
-                State = user.State,
-                Password = "*****"
-            };
-            return View(userDTO);
-        }
-
-        // POST: Usuario/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            T_User user = db.T_User.Find(id);
-            db.T_User.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
