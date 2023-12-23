@@ -131,61 +131,65 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\FacturaController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Model_LaFarmacia.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model_LaFarmacia.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model_LaFarmacia.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model_LaFarmacia.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model_LaFarmacia.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SP_CheckUser_Result.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_Client.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_InvoiceDetail.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_InvoiceHeader.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_MethodPay.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_Product.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_ProductType.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_Rol.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\T_User.cs">
-      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\viewModel\ClientDTO.cs" />
     <Compile Include="Models\viewModel\InvoiceDetailDTO.cs" />
     <Compile Include="Models\viewModel\InvoiceHeaderDTO.cs" />
+    <Compile Include="Models\viewModel\LoginDTO.cs" />
     <Compile Include="Models\viewModel\MethodPayDTO.cs" />
+    <Compile Include="Models\viewModel\ModeloFarmacia.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloFarmacia.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\ModeloFarmacia.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\ModeloFarmacia.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloFarmacia.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\viewModel\ProductDTO.cs" />
     <Compile Include="Models\viewModel\ProductTypeDTO.cs" />
     <Compile Include="Models\viewModel\RolDTO.cs" />
+    <Compile Include="Models\viewModel\SP_CheckUser_Result.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\sysdiagrams.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_Client.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_InvoiceDetail.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_InvoiceHeader.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_MethodPay.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_Product.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_ProductType.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_Rol.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\viewModel\T_User.cs">
+      <DependentUpon>ModeloFarmacia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\viewModel\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -198,24 +202,24 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model_LaFarmacia.Context.tt">
+    <Content Include="Models\viewModel\ModeloFarmacia.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_LaFarmacia.edmx</DependentUpon>
-      <LastGenOutput>Model_LaFarmacia.Context.cs</LastGenOutput>
+      <DependentUpon>ModeloFarmacia.edmx</DependentUpon>
+      <LastGenOutput>ModeloFarmacia.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model_LaFarmacia.tt">
+    <Content Include="Models\viewModel\ModeloFarmacia.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_LaFarmacia.edmx</DependentUpon>
-      <LastGenOutput>Model_LaFarmacia.cs</LastGenOutput>
+      <DependentUpon>ModeloFarmacia.edmx</DependentUpon>
+      <LastGenOutput>ModeloFarmacia.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model_LaFarmacia.edmx">
+    <EntityDeploy Include="Models\viewModel\ModeloFarmacia.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model_LaFarmacia.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModeloFarmacia.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Model_LaFarmacia.edmx.diagram">
-      <DependentUpon>Model_LaFarmacia.edmx</DependentUpon>
+    <Content Include="Models\viewModel\ModeloFarmacia.edmx.diagram">
+      <DependentUpon>ModeloFarmacia.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -253,7 +257,6 @@
     <Content Include="Views\Producto\Edit.cshtml" />
     <Content Include="Views\Producto\Index.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
-    <Content Include="Views\Usuario\Delete.cshtml" />
     <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
@@ -262,6 +265,7 @@
     <Content Include="Views\Factura\Details.cshtml" />
     <Content Include="Views\Factura\Edit.cshtml" />
     <Content Include="Views\Factura\Index.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

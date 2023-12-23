@@ -7,12 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LaFarmacia.Models
+namespace LaFarmacia.Models.viewModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class T_User
+    public partial class SP_CheckUser_Result
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -20,7 +19,5 @@ namespace LaFarmacia.Models
         public int RolId { get; set; }
         public bool State { get; set; }
         public byte[] Password { get; set; }
-    
-        public virtual T_Rol T_Rol { get; set; }
     }
 }

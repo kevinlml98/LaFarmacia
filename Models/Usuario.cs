@@ -12,26 +12,24 @@ namespace LaFarmacia.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class T_InvoiceHeader
+    public partial class Usuario
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_InvoiceHeader()
+        public Usuario()
         {
-            this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
+            this.EncabezadoFactura = new HashSet<EncabezadoFactura>();
         }
     
-        public string Code { get; set; }
-        public System.DateTime Date { get; set; }
-        public int ClientId { get; set; }
-        public int PayMethodTypeId { get; set; }
-        public decimal SubTotal { get; set; }
-        public decimal Tax { get; set; }
-        public decimal Discount { get; set; }
-        public decimal Total { get; set; }
+        public int IdentificacionUsuario { get; set; }
+        public string NombreCompletoUsuario { get; set; }
+        public string CorreoElectronico { get; set; }
+        public int IdTipoUsuario { get; set; }
+        public int IdEstadoUsuario { get; set; }
+        public string Contraseña { get; set; }
     
-        public virtual T_Client T_Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
-        public virtual T_MethodPay T_MethodPay { get; set; }
+        public virtual ICollection<EncabezadoFactura> EncabezadoFactura { get; set; }
+        public virtual EstadoUsuario EstadoUsuario { get; set; }
+        public virtual TipoUsuario TipoUsuario { get; set; }
     }
 }

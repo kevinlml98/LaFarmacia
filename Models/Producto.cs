@@ -12,23 +12,24 @@ namespace LaFarmacia.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Product
+    public partial class Producto
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_Product()
+        public Producto()
         {
-            this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
+            this.DetalleFactura = new HashSet<DetalleFactura>();
         }
     
-        public string Code { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public int Count { get; set; }
-        public bool State { get; set; }
-        public string ProductTypeCode { get; set; }
+        public string CodigoProducto { get; set; }
+        public string DescripcionProducto { get; set; }
+        public string TipoProducto { get; set; }
+        public int EstadoProducto { get; set; }
+        public decimal Precio { get; set; }
+        public int CantidadStock { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
-        public virtual T_ProductType T_ProductType { get; set; }
+        public virtual ICollection<DetalleFactura> DetalleFactura { get; set; }
+        public virtual EstadoProducto EstadoProducto1 { get; set; }
+        public virtual TipoProducto TipoProducto1 { get; set; }
     }
 }

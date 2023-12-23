@@ -7,21 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LaFarmacia.Models
+namespace LaFarmacia.Models.viewModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class T_InvoiceDetail
+    public partial class sysdiagrams
     {
-        public long Id { get; set; }
-        public string InvoiceHeaderCode { get; set; }
-        public string ProductCode { get; set; }
-        public int Count { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal Total { get; set; }
-    
-        public virtual T_InvoiceHeader T_InvoiceHeader { get; set; }
-        public virtual T_Product T_Product { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

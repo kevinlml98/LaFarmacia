@@ -7,23 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LaFarmacia.Models
+namespace LaFarmacia.Models.viewModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class T_ProductType
+    public partial class T_InvoiceHeader
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_ProductType()
+        public T_InvoiceHeader()
         {
-            this.T_Product = new HashSet<T_Product>();
+            this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
         }
     
         public string Code { get; set; }
-        public string Description { get; set; }
+        public System.DateTime Date { get; set; }
+        public int ClientId { get; set; }
+        public int PayMethodTypeId { get; set; }
+        public decimal SubTotal { get; set; }
+        public decimal Tax { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Total { get; set; }
     
+        public virtual T_Client T_Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_Product> T_Product { get; set; }
+        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
+        public virtual T_MethodPay T_MethodPay { get; set; }
     }
 }

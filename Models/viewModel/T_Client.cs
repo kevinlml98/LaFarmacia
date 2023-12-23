@@ -7,17 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LaFarmacia.Models
+namespace LaFarmacia.Models.viewModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class SP_CheckUser_Result
+    public partial class T_Client
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public T_Client()
+        {
+            this.T_InvoiceHeader = new HashSet<T_InvoiceHeader>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public int RolId { get; set; }
-        public bool State { get; set; }
-        public byte[] Password { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<T_InvoiceHeader> T_InvoiceHeader { get; set; }
     }
 }

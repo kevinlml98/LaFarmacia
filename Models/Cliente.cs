@@ -12,19 +12,19 @@ namespace LaFarmacia.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class T_MethodPay
+    public partial class Cliente
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_MethodPay()
+        public Cliente()
         {
-            this.T_InvoiceHeader = new HashSet<T_InvoiceHeader>();
+            this.EncabezadoFactura = new HashSet<EncabezadoFactura>();
         }
     
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public decimal Tax { get; set; }
+        public int IdentificacionCliente { get; set; }
+        public string NombreCompletoCliente { get; set; }
+        public string CorreoElectronico { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_InvoiceHeader> T_InvoiceHeader { get; set; }
+        public virtual ICollection<EncabezadoFactura> EncabezadoFactura { get; set; }
     }
 }

@@ -7,12 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LaFarmacia.Models;
+using LaFarmacia.Models.viewModel;
 
 namespace LaFarmacia.Controllers
 {
     public class FacturaController : Controller
     {
-        private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3();
 
         // GET: Factura
         public ActionResult Index()

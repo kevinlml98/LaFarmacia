@@ -1,27 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
 using System.Net;
-using System.Web;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using LaFarmacia.Models;
 using LaFarmacia.Models.viewModel;
-using Microsoft.Ajax.Utilities;
 
 namespace LaFarmacia.Controllers
 {
     public class UsuarioController : Controller
     {
-        private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3();
+
+        private string contraseña(int largo)
+        {
+            const string palabras = "ABCDEFGHIJK1234567890#$%^&**!';";
+
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < largo; i++)
+            {
+                int entrada = random.Next(palabras.Length);
+                sb.Append(palabras[entrada]);
+            }
+            return sb.ToString();
+
+        }
 
         // GET: Usuario
         public ActionResult Index()
         {
             List<UserDTO> usersDTO = new List<UserDTO>();
-            foreach(T_User user in db.T_User)
+            foreach(SP_CheckUser_Result user in db.T_User)
             {
+                string contrasenna = contraseña(8);
+
                 usersDTO.Add(new UserDTO()
                 {
                     Id = user.Id,
@@ -43,7 +57,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            T_User user = db.T_User.Find(id);
+            SP_CheckUser_Result user = db.T_User.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -56,10 +70,11 @@ namespace LaFarmacia.Controllers
                 RolId = user.RolId,
                 RolDescription = user.T_Rol.Description,
                 State = user.State,
-                Password = "******"
+                Password = contraseña(8)
             };
             return View(userDTO);
         }
+
 
         // GET: Usuario/Create
         public ActionResult Create()
@@ -69,21 +84,19 @@ namespace LaFarmacia.Controllers
         }
 
         // POST: Usuario/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Email,RolId,State,Password")] UserDTO userDTO)
         {
-            
-            if (ModelState.IsValid)
-            {
-                db.SP_NewUser(userDTO.Name,userDTO.Email,userDTO.RolId,userDTO.State,userDTO.Password);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(userDTO);
+               if (ModelState.IsValid)
+               {
+                    db.SP_NewUser(userDTO.Name, userDTO.Email, userDTO.RolId, userDTO.State, contraseña(8));
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+               }
+                ViewBag.listaRoles = ListaRoles();
+                return View(userDTO);
+             
         }
 
         // GET: Usuario/Edit/5
@@ -94,7 +107,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            T_User user = db.T_User.Find(id);
+            SP_CheckUser_Result user = db.T_User.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -112,8 +125,6 @@ namespace LaFarmacia.Controllers
         }
 
         // POST: Usuario/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Email,RolId,State,Password")] UserDTO userDTO)
@@ -125,41 +136,6 @@ namespace LaFarmacia.Controllers
                 return RedirectToAction("Index");
             }
             return View(userDTO);
-        }
-
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            T_User user = db.T_User.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            UserDTO userDTO = new UserDTO()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                RolId = user.RolId,
-                State = user.State,
-                Password = "*****"
-            };
-            return View(userDTO);
-        }
-
-        // POST: Usuario/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            T_User user = db.T_User.Find(id);
-            db.T_User.Remove(user);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

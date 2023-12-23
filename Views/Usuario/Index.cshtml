@@ -2,13 +2,56 @@
 
 @{
     ViewBag.Title = "Index";
+
 }
 
 <h2>Index</h2>
 
+<style>
+    h2 {
+        color: #a89bff;
+        font-family: Georgia;
+        font-style: italic;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table {
+        background-color: #05061f;
+        font-family: Georgia;
+        border-color: aliceblue;
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        padding: 9px;
+    }
+
+    th {
+        color: #a89bff;
+        font-weight: bold;
+        font-style: italic;
+        text-align: center;
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        padding: 9px;
+    }
+
+    td {
+        font-weight: bold;
+        color: azure;
+        border: 1px solid #ffffff;
+        border-collapse: collapse;
+        padding: 9px;
+    }
+
+    tr {
+        color: azure;
+        text-align: center;
+    }
+</style>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -27,31 +70,33 @@
             @Html.DisplayNameFor(model => model.Password)
         </th>
         <th></th>
+
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RolDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.State)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
 
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RolDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Lista", "Lista", new { id = item.Id }) |       
+            </td>
+        </tr>
+    }
 </table>
+    

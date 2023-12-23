@@ -7,24 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LaFarmacia.Models
+namespace LaFarmacia.Models.viewModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class T_Rol
+    public partial class T_Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public T_Rol()
+        public T_Product()
         {
-            this.T_User = new HashSet<T_User>();
+            this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
         }
     
-        public int Id { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
-        public string Permission { get; set; }
+        public decimal Price { get; set; }
+        public int Count { get; set; }
+        public bool State { get; set; }
+        public string ProductTypeCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_User> T_User { get; set; }
+        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
+        public virtual T_ProductType T_ProductType { get; set; }
     }
 }

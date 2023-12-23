@@ -6,13 +6,46 @@
 
 <h2>Create</h2>
 
+    <style>
+        h2 {
+            color: #a89bff;
+            font-family: Georgia;
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+        }
+        div {
+            
+            font-family: Georgia;
+            font-weight: bold;
+            font-style:italic;
+            color:#485094;
+
+            
+        }
+        h4 {
+            color: #a89bff;
+            font-family: Georgia;
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+        }
+        .menu-editar {
+            background-color: #ced1f3;
+            font-family: Georgia;
+            border-color: aliceblue;
+            border: 1px solid #ffffff;
+            border-collapse: collapse;
+            padding: 9px;
+        }
+        
+    </style>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>UserDTO</h4>
+    <div class="form-horizontal menu-editar" >
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -26,8 +59,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger"})
             </div>
         </div>
 
@@ -43,7 +76,7 @@
             @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.State)
+                    @Html.EditorFor(model => model.State,  new { htmlAttributes = new { @style = "margin-left: 5px;" } })
                     @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                 </div>
             </div>

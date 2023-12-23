@@ -17,7 +17,7 @@ namespace LaFarmacia.Controllers
         public ActionResult Index()
         {
             List<ClientDTO> clients = new List<ClientDTO>();
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using(LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
             {
                 foreach(T_Client client in db.T_Client)
                 {
@@ -39,7 +39,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using(LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
             {
                 T_Client client = db.T_Client.Find(id);
                 if (client == null)
@@ -72,7 +72,7 @@ namespace LaFarmacia.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+                using(LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
                 {
                     T_Client client = new T_Client()
                     {
@@ -96,7 +96,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using(LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
             {
                 T_Client client = db.T_Client.Find(id);
                 if (client == null)
@@ -122,7 +122,7 @@ namespace LaFarmacia.Controllers
         {
             if (ModelState.IsValid)
             {
-                using(LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+                using(LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
                 {
                     T_Client cliente = new T_Client()
                     {
@@ -146,7 +146,7 @@ namespace LaFarmacia.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using (LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
             {
                 T_Client cliente = db.T_Client.Find(id);
                 if (cliente == null)
@@ -168,7 +168,7 @@ namespace LaFarmacia.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            using (LaFarmaciaDBEntities db = new LaFarmaciaDBEntities())
+            using (LaFarmaciaDBEntities3 db = new LaFarmaciaDBEntities3())
             {
                 T_Client cliente = db.T_Client.Find(id);
                 db.T_Client.Remove(cliente);
