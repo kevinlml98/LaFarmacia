@@ -21,7 +21,7 @@ namespace LaFarmacia.Models
             this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
         }
         [Required]
-        [Display(Name = "Código")]
+        [Display(Name = "Código de Producto")]
         public string Code { get; set; }
         [Required]
         [Display(Name = "Descripción")]
@@ -30,7 +30,8 @@ namespace LaFarmacia.Models
         [Display(Name = "Precio")]
         public decimal Price { get; set; }
         [Required]
-        [Display(Name = "Cantidad")]
+
+        [Display(Name = "Cantidad de Producto")]
         public int Count { get; set; }
         [Required]
         [Display(Name = "Estado")]
