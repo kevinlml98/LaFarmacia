@@ -200,18 +200,25 @@ namespace LaFarmacia.Controllers
             var usr = db.SP_CheckUser(user.Email, user.Password).ToList();
             if (usr.Count() > 0)
             {
+                T_Rol rol = db.T_Rol.Find(usr[0].Id);
                 UserDTO usuario = new UserDTO()
                 {
                     Email = usr[0].Email,
                     Id = usr[0].Id,
                     Name = usr[0].Name,
                     RolId = usr[0].RolId,
-                    State = usr[0].State
+                    State = usr[0].State,
+                    RolDescription = rol.Description
                 };
+                return RedirectToAction("Index", "Home");
             }
-
-
-            return View();
+            else
+            {
+                ViewBag.Mostrar = 1;
+                ViewBag.Mensaje = "Usuario o contraseña incorrectos";
+                return View();
+            }
+            
         }
     }
 }
