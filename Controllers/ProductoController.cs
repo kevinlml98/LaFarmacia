@@ -12,7 +12,7 @@ namespace LaFarmacia.Controllers
 {
     public class ProductoController : Controller
     {
-        private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private LaFarmaciaDBEntities2 db = new LaFarmaciaDBEntities2();
 
         // GET: Producto
         public ActionResult Index()

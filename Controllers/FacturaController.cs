@@ -12,7 +12,7 @@ namespace LaFarmacia.Controllers
 {
     public class FacturaController : Controller
     {
-        private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private LaFarmaciaDBEntities2 db = new LaFarmaciaDBEntities2();
 
         // GET: Factura
         public ActionResult Index()

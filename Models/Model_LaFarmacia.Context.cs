@@ -15,10 +15,10 @@ namespace LaFarmacia.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class LaFarmaciaDBEntities : DbContext
+    public partial class LaFarmaciaDBEntities2 : DbContext
     {
-        public LaFarmaciaDBEntities()
-            : base("name=LaFarmaciaDBEntities")
+        public LaFarmaciaDBEntities2()
+            : base("name=LaFarmaciaDBEntities2")
         {
         }
     
@@ -27,6 +27,7 @@ namespace LaFarmacia.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<T_Client> T_Client { get; set; }
         public virtual DbSet<T_InvoiceDetail> T_InvoiceDetail { get; set; }
         public virtual DbSet<T_InvoiceHeader> T_InvoiceHeader { get; set; }
@@ -49,6 +50,27 @@ namespace LaFarmacia.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_AddClient", pNameParameter, pEmailParameter);
         }
     
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
         public virtual ObjectResult<SP_CheckUser_Result> SP_CheckUser(string pEmail, string pPassword)
         {
             var pEmailParameter = pEmail != null ?
@@ -60,6 +82,108 @@ namespace LaFarmacia.Models
                 new ObjectParameter("pPassword", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_CheckUser_Result>("SP_CheckUser", pEmailParameter, pPasswordParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int SP_NewUser(string pName, string pEmail, Nullable<int> pRolId, Nullable<bool> pState, string pPassword)
+        {
+            var pNameParameter = pName != null ?
+                new ObjectParameter("pName", pName) :
+                new ObjectParameter("pName", typeof(string));
+    
+            var pEmailParameter = pEmail != null ?
+                new ObjectParameter("pEmail", pEmail) :
+                new ObjectParameter("pEmail", typeof(string));
+    
+            var pRolIdParameter = pRolId.HasValue ?
+                new ObjectParameter("pRolId", pRolId) :
+                new ObjectParameter("pRolId", typeof(int));
+    
+            var pStateParameter = pState.HasValue ?
+                new ObjectParameter("pState", pState) :
+                new ObjectParameter("pState", typeof(bool));
+    
+            var pPasswordParameter = pPassword != null ?
+                new ObjectParameter("pPassword", pPassword) :
+                new ObjectParameter("pPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_NewUser", pNameParameter, pEmailParameter, pRolIdParameter, pStateParameter, pPasswordParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
         }
     
         public virtual int SP_UpdateUser(Nullable<int> pId, string pName, string pEmail, Nullable<int> pRolId, Nullable<bool> pState, string pPassword)
@@ -91,29 +215,9 @@ namespace LaFarmacia.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_UpdateUser", pIdParameter, pNameParameter, pEmailParameter, pRolIdParameter, pStateParameter, pPasswordParameter);
         }
     
-        public virtual int SP_NewUser(string pName, string pEmail, Nullable<int> pRolId, Nullable<bool> pState, string pPassword)
+        public virtual int sp_upgraddiagrams()
         {
-            var pNameParameter = pName != null ?
-                new ObjectParameter("pName", pName) :
-                new ObjectParameter("pName", typeof(string));
-    
-            var pEmailParameter = pEmail != null ?
-                new ObjectParameter("pEmail", pEmail) :
-                new ObjectParameter("pEmail", typeof(string));
-    
-            var pRolIdParameter = pRolId.HasValue ?
-                new ObjectParameter("pRolId", pRolId) :
-                new ObjectParameter("pRolId", typeof(int));
-    
-            var pStateParameter = pState.HasValue ?
-                new ObjectParameter("pState", pState) :
-                new ObjectParameter("pState", typeof(bool));
-    
-            var pPasswordParameter = pPassword != null ?
-                new ObjectParameter("pPassword", pPassword) :
-                new ObjectParameter("pPassword", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_NewUser", pNameParameter, pEmailParameter, pRolIdParameter, pStateParameter, pPasswordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace LaFarmacia.Controllers
 {
     public class UsuarioController : Controller
     {
-        private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private LaFarmaciaDBEntities2 db = new LaFarmaciaDBEntities2();
 
         // GET: Usuario
         public ActionResult Index()

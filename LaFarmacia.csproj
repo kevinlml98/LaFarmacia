@@ -155,6 +155,9 @@
     <Compile Include="Models\SP_CheckUser_Result.cs">
       <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\T_Client.cs">
       <DependentUpon>Model_LaFarmacia.tt</DependentUpon>
     </Compile>
