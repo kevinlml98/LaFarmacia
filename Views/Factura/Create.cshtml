@@ -4,7 +4,25 @@
     ViewBag.Title = "Create";
 
 }
-
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Facturación", "Index", "Factura", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Productos", "Index", "Producto")</li>
+                <li>@Html.ActionLink("Usuarios", "Index", "Usuario")</li>
+                <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <h2>Creación de Factura</h2>
 
 @if (ViewBag.ValorMensaje == 1)
@@ -80,7 +98,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PayMethodTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.PayMethodTypeId,"PayMethodTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("PayMethodTypeId", null, htmlAttributes: new { @class = "form-control", id = "MetodoPago" })
             @Html.ValidationMessageFor(model => model.PayMethodTypeId, "", new { @class = "text-danger" })
@@ -90,7 +108,7 @@
     <h3>Detalle de la Factura</h3>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.T_Product.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.T_Product.Code,"ProductoId", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("ProductoId", null, htmlAttributes: new { @class = "form-control", id = "Producto" })
             @Html.ValidationMessageFor(model => model.T_Product.Code, "", new { @class = "text-danger" })
@@ -105,7 +123,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.T_Product.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.T_Product.Count,"Count", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.T_Product.Count, new { htmlAttributes = new { @class = "form-control", id = "Cantidad" } })
         </div>
@@ -179,7 +197,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar", "Index")
 </div>
 
 @section Scripts {

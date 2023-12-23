@@ -208,10 +208,17 @@ namespace LaFarmacia.Controllers
                     RolId = usr[0].RolId,
                     State = usr[0].State
                 };
+                return RedirectToAction("Index", "Home");
             }
+            else
+            {
+                ViewBag.valor = 1;
+                ViewBag.mensaje = "Usuario y contraseña incorrectas";
 
+                return View();
+            }
+            
 
-            return View();
         }
     }
 }

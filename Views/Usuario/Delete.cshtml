@@ -3,12 +3,29 @@
 @{
     ViewBag.Title = "Delete";
 }
-
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Facturación", "Index", "Factura", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Productos", "Index", "Producto")</li>
+                <li>@Html.ActionLink("Usuarios", "Index", "Usuario")</li>
+                <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+            </ul>
+        </div>
+    </div>
+</div>
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Desea eliminar el usuario?</h3>
 <div>
-    <h4>UserDTO</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -58,7 +75,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Regresar", "Index")
         </div>
     }
 </div>
