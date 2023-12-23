@@ -11,7 +11,8 @@ namespace LaFarmacia.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class T_ProductType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,8 +20,12 @@ namespace LaFarmacia.Models
         {
             this.T_Product = new HashSet<T_Product>();
         }
-    
+
+        [Required]
+        [Display(Name = "Tipo de Producto")]
         public string Code { get; set; }
+        [Required]
+        [Display(Name = "Tipo de Producto")]
         public string Description { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
