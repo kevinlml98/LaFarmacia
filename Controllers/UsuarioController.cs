@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using LaFarmacia.Models;
@@ -15,7 +16,21 @@ namespace LaFarmacia.Controllers
     public class UsuarioController : Controller
     {
         private LaFarmaciaDBEntities db = new LaFarmaciaDBEntities();
+        private string contraseña(int largo)
+        {
+            const string palabras = "ABCDEFGHIJK1234567890#$%^&**!';";
 
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < largo; i++)
+            {
+                int entrada = random.Next(palabras.Length);
+                sb.Append(palabras[entrada]);
+            }
+            return sb.ToString();
+
+        }
         // GET: Usuario
         public ActionResult Index()
         {
