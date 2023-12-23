@@ -173,10 +173,7 @@ namespace LaFarmacia.Controllers
         [HttpPost]
         public ActionResult Login(UserDTO user)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            
             var usr = db.SP_CheckUser(user.Email, user.Password).ToList();
             if (usr.Count() > 0)
             {
