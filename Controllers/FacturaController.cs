@@ -141,6 +141,11 @@ namespace LaFarmacia.Controllers
                 {
 
                 t_InvoiceHeader.Code = CalcularConsecutivo();
+                t_InvoiceHeader.Tax = 13;
+                t_InvoiceHeader.Discount = 0;
+                t_InvoiceHeader.SubTotal = CalcularSubTotal();
+                t_InvoiceHeader.Total = CalcularTotal(t_InvoiceHeader.PayMethodTypeId, t_InvoiceHeader.SubTotal);
+                t_InvoiceHeader.T_InvoiceDetailList = _InvoiceDetailGlobal;
 
                 if (ModelState.IsValid)
                     {
@@ -243,8 +248,30 @@ namespace LaFarmacia.Controllers
                 if (t_Productseleccionado.Count >= t_Product.Count)
                 {
 
-                    respuesta.Resultado = true;
-                    respuesta.Texto = "El Producto se añadio correctamente.";
+                    bool ProductoFacturado = true;
+
+                    foreach (var item in _InvoiceDetailGlobal)
+                    {
+                        if (item.ProductCode == t_Productseleccionado.Code)
+                        {
+                            ProductoFacturado = false;
+                            break;
+                        }
+
+                    }
+
+                    if (ProductoFacturado == false)
+                    {
+                        respuesta.Resultado = false;
+                        respuesta.Texto = "El Producto ya se encuentra en la factura.";
+                    }
+                    else
+                    {
+
+                        respuesta.Resultado = true;
+                        respuesta.Texto = "El Producto se añadio correctamente.";
+
+                    }
 
                 }
                 else
@@ -260,24 +287,31 @@ namespace LaFarmacia.Controllers
             return Json(respuesta);
         }
 
-        public JsonResult AgregarDetalle(T_InvoiceDetail t_InvoiceDetail)
+        public ActionResult AgregarDetalle(T_InvoiceDetail t_InvoiceDetail)
         {
-
-            Respuesta respuesta = new Respuesta();
 
             _InvoiceDetailGlobal.Add(t_InvoiceDetail);
 
-            List<T_Product> t_Products = new List<T_Product>();
+            List<ProductDTO> productDTOs = new List<ProductDTO>();
 
             foreach (var item in _InvoiceDetailGlobal)
             {
-
                 T_Product t_Productseleccionado = db.T_Product.Find(item.ProductCode);
-                t_Products.Add(t_Productseleccionado);
+
+                productDTOs.Add(new ProductDTO()
+                {
+                    Code = t_Productseleccionado.Code,
+                    Description = t_Productseleccionado.Description,
+                    Count = item.Count,
+                    Price = t_Productseleccionado.Price,
+                    ProductTypeCode = t_Productseleccionado.ProductTypeCode,
+                    State = t_Productseleccionado.State
+                });
 
             }
 
-            return Json(t_Products);
+            return Json(productDTOs);
+
         }
 
         public ActionResult CalcularStock(T_Product t_Product)
@@ -309,6 +343,40 @@ namespace LaFarmacia.Controllers
             string FormatoConsecutivo = string.Format("FAC{0:D10}", ConsecutivoI + 1);
 
             return FormatoConsecutivo;
+        }
+
+        public decimal CalcularSubTotal()
+        {
+
+            decimal SubTotal = 0;
+
+            foreach (var item in _InvoiceDetailGlobal)
+            {
+                T_Product t_Productseleccionado = db.T_Product.Find(item.ProductCode);
+
+                SubTotal = SubTotal + (t_Productseleccionado.Price * item.Count);
+            }
+
+            return SubTotal;
+        }
+
+        public decimal CalcularTotal(int MetodoPago, decimal Subtotal)
+        {
+
+            decimal Total = 0;
+
+            decimal Impuesto = Subtotal * 0.13m;
+
+            Total = Subtotal + Impuesto;
+
+            if (MetodoPago == 2)
+            {
+                Total = Total + 0.02m;
+
+
+            }
+
+            return Total;
         }
 
         public decimal CalcularPrecioUnitario(string id)
