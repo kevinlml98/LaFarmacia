@@ -115,5 +115,7 @@ namespace LaFarmacia.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_NewUser", pNameParameter, pEmailParameter, pRolIdParameter, pStateParameter, pPasswordParameter);
         }
+
+        public System.Data.Entity.DbSet<LaFarmacia.Models.viewModel.UserDTO> UserDTOes { get; set; }
     }
 }
