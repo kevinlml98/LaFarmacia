@@ -1,13 +1,12 @@
 ﻿@model LaFarmacia.Models.T_InvoiceHeader
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles de factura";
 }
 
-<h2>Details</h2>
+<h2>Detalles de factura</h2>
 
 <div>
-    <h4>T_InvoiceHeader</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -67,8 +66,57 @@
         </dd>
 
     </dl>
+
+    <table class="table">
+        <tr>
+            <th>
+                <label>Código Detalle de Factura</label>
+            </th>
+            <th>
+                <label>Código Factura</label>
+            </th>
+            <th>
+                <label>Código Producto</label>
+            </th>
+            <th>
+                <label>Cantidad</label>
+            </th>
+            <th>
+                <label>Precio Unitario</label>
+            </th>
+            <th>
+                <label>Total</label>
+            </th>
+        </tr>
+
+        @foreach (var item in Model.T_InvoiceDetail)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceHeaderCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Code }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
