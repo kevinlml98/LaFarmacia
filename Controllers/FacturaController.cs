@@ -140,12 +140,13 @@ namespace LaFarmacia.Controllers
                 else
                 {
 
-                t_InvoiceHeader.Code = CalcularConsecutivo();
+
+                string consecutivo = CalcularConsecutivo();
+                t_InvoiceHeader.Code = consecutivo;
                 t_InvoiceHeader.Tax = 13;
                 t_InvoiceHeader.Discount = 0;
                 t_InvoiceHeader.SubTotal = CalcularSubTotal();
                 t_InvoiceHeader.Total = CalcularTotal(t_InvoiceHeader.PayMethodTypeId, t_InvoiceHeader.SubTotal);
-                t_InvoiceHeader.T_InvoiceDetailList = _InvoiceDetailGlobal;
 
                 if (ModelState.IsValid)
                     {
@@ -153,31 +154,35 @@ namespace LaFarmacia.Controllers
                         db.T_InvoiceHeader.Add(t_InvoiceHeader);
                         db.SaveChanges();
                         
-                        foreach (var item in t_InvoiceHeader.T_InvoiceDetailList)
+                        foreach (var item in _InvoiceDetailGlobal)
                         {
 
                         decimal precioUnitario = CalcularPrecioUnitario(item.ProductCode);
 
                         T_InvoiceDetail t_InvoiceDetail = new T_InvoiceDetail();
-                        t_InvoiceDetail.InvoiceHeaderCode = t_InvoiceHeader.Code;
+                        t_InvoiceDetail.InvoiceHeaderCode = consecutivo;
                         t_InvoiceDetail.ProductCode = item.ProductCode;
                         t_InvoiceDetail.Count = item.Count;
                         t_InvoiceDetail.UnitPrice = precioUnitario;
-                        t_InvoiceDetail.Total = item.Total;
+                        t_InvoiceDetail.Total = item.Count * precioUnitario;
                         db.T_InvoiceDetail.Add(t_InvoiceDetail);
 
-                        }
+                        var pro = db.T_Product.Find(item.ProductCode);
+                        int cantidadnueva = pro.Count - item.Count;
+                        pro.Count = cantidadnueva;
+
+                        db.Entry(pro).State = System.Data.Entity.EntityState.Modified;
+
+                    }
 
                     db.SaveChanges();
 
-                }
-
-                    ViewBag.ProductoId = new SelectList(db.T_Product, "Code", "Description", t_InvoiceHeader.ProductoId);
-                    ViewBag.PayMethodTypeId = new SelectList(db.T_MethodPay, "Id", "Description", t_InvoiceHeader.PayMethodTypeId);
-                    ViewBag.PrecioId = new SelectList(db.T_Product, "Price", "Description");
-                    return View(t_InvoiceHeader);
 
                 }
+
+                return RedirectToAction("Index", "Factura");
+
+            }
             
         }
 
@@ -330,17 +335,30 @@ namespace LaFarmacia.Controllers
         public string CalcularConsecutivo()
         {
 
+            string FormatoConsecutivo = "";
+
             T_InvoiceHeader UltimoElemento = db.T_InvoiceHeader.OrderByDescending(x => x.Code).FirstOrDefault();
 
-            string CodigoActual = UltimoElemento.Code;
+            if (UltimoElemento == null)
+            {
 
-            string[] Separador = CodigoActual.Split('0');
+                FormatoConsecutivo = string.Format("FAC{0:D10}", 1);
 
-            string ConsecutivoS = Separador[Separador.Length - 1];
+            }
+            else
+            {
 
-            int ConsecutivoI = Convert.ToInt32(ConsecutivoS);
+                string CodigoActual = UltimoElemento.Code;
 
-            string FormatoConsecutivo = string.Format("FAC{0:D10}", ConsecutivoI + 1);
+                string[] Separador = CodigoActual.Split('0');
+
+                string ConsecutivoS = Separador[Separador.Length - 1];
+
+                int ConsecutivoI = Convert.ToInt32(ConsecutivoS);
+
+                FormatoConsecutivo = string.Format("FAC{0:D10}", ConsecutivoI + 1);
+
+            }
 
             return FormatoConsecutivo;
         }

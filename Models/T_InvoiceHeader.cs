@@ -18,7 +18,7 @@ namespace LaFarmacia.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public T_InvoiceHeader()
         {
-            this.T_InvoiceDetailList = new HashSet<T_InvoiceDetail>();
+            this.T_InvoiceDetail = new HashSet<T_InvoiceDetail>();
         }
         [Required]
         [Display(Name = "Código de Factura")]
@@ -51,10 +51,10 @@ namespace LaFarmacia.Models
         public int ProductoId { get; set; }
 
         public virtual T_Product T_Product { get; set; }
-        public virtual T_InvoiceDetail T_InvoiceDetail { get; set; }
         public virtual T_Client T_Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetailList { get; set; }
+        public virtual ICollection<T_InvoiceDetail> T_InvoiceDetail { get; set; }
         public virtual T_MethodPay T_MethodPay { get; set; }
+
     }
 }

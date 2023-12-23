@@ -80,7 +80,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PayMethodTypeId, "PayMethodTypeId", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.PayMethodTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("PayMethodTypeId", null, htmlAttributes: new { @class = "form-control", id = "MetodoPago" })
             @Html.ValidationMessageFor(model => model.PayMethodTypeId, "", new { @class = "text-danger" })
@@ -90,10 +90,10 @@
     <h3>Detalle de la Factura</h3>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.T_InvoiceDetail.T_Product.Code, "ProductoId", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.T_Product.Code, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("ProductoId", null, htmlAttributes: new { @class = "form-control", id = "Producto" })
-            @Html.ValidationMessageFor(model => model.T_InvoiceDetail.T_Product.Code, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.T_Product.Code, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -105,16 +105,16 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.T_InvoiceDetail.Count, "Count", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.T_Product.Count, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.T_InvoiceDetail.Count, new { htmlAttributes = new { @class = "form-control", id = "Cantidad" } })
+            @Html.EditorFor(model => model.T_Product.Count, new { htmlAttributes = new { @class = "form-control", id = "Cantidad" } })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-10">
             @Html.DropDownList("PrecioId", null, htmlAttributes: new { @class = "form-control", id = "PrecioUnitario" })
-            @Html.ValidationMessageFor(model => model.T_InvoiceDetail.T_Product.Price, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.T_Product.Price, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -374,6 +374,9 @@
                                              Total.value = Sumtotal;
 
                                          }
+
+                                         document.getElementById("Producto").value = "";
+                                         document.getElementById("Cantidad").value = 0;
 
                                      }
 
